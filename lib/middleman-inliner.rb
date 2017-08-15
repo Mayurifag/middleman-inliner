@@ -21,8 +21,8 @@ class Inliner < Middleman::Extension
     def inline_js(*names)
       names.map { |name|
         name += ".js" unless name.include?(".js")
-        js = sprockets.find_asset(name).to_s
-        "<script type='text/javascript'>#{defined?(Uglifier) ? Uglifier.compile(js) : js}</script>"
+        js = File.read(File.join(app.config[:source], app.config[:js_dir], name))
+        "<script type='text/javascript'>#{js}</script>"
       }.reduce(:+)
     end
 
